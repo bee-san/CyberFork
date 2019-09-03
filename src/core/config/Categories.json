@@ -122,7 +122,8 @@
             "PGP Encrypt",
             "PGP Decrypt",
             "PGP Encrypt and Sign",
-            "PGP Decrypt and Verify"
+            "PGP Decrypt and Verify",
+            "Parse SSH Host Key"
         ]
     },
     {
@@ -166,6 +167,8 @@
             "Parse IP range",
             "Parse IPv6 address",
             "Parse IPv4 header",
+            "Parse UDP",
+            "Parse SSH Host Key",
             "Parse URI",
             "URL Encode",
             "URL Decode",
@@ -177,7 +180,8 @@
             "Group IP addresses",
             "Encode NetBIOS Name",
             "Decode NetBIOS Name",
-            "Defang URL"
+            "Defang URL",
+            "Defang IP Addresses"
         ]
     },
     {
@@ -224,6 +228,7 @@
             "Convert speed",
             "Convert data units",
             "Convert co-ordinate format",
+            "Show on map",
             "Parse UNIX file permissions",
             "Swap endianness",
             "Parse colour code",
@@ -353,7 +358,8 @@
             "BSON serialise",
             "BSON deserialise",
             "To MessagePack",
-            "From MessagePack"
+            "From MessagePack",
+            "Render Markdown"
         ]
     },
     {

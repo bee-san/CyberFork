@@ -202,6 +202,7 @@ self.bakeInput = function(inputNum, bakeId) {
     if (inputObj === null ||
         inputObj === undefined ||
         inputObj.status !== "loaded") {
+
         self.postMessage({
             action: "queueInputError",
             data: {
@@ -441,7 +442,7 @@ self.updateTabHeader = function(inputNum) {
  *
  * @param {object} inputData
  * @param {number} inputData.inputNum - The input to get the data for
- * @param {boolean} inputData.silent - If false, the manager statechange event won't be fired
+ * @param {boolean} inputData.silent - If false, the manager statechange event will be fired
  */
 self.setInput = function(inputData) {
     const inputNum = inputData.inputNum;
@@ -493,8 +494,8 @@ self.setInput = function(inputData) {
 self.refreshTabs = function(inputNum, direction) {
     const nums = self.getNearbyNums(inputNum, direction),
         inputNums = Object.keys(self.inputs),
-        tabsLeft = (self.getSmallestInputNum(inputNums) !== nums[0]),
-        tabsRight = (self.getLargestInputNum(inputNums) !== nums[nums.length - 1]);
+        tabsLeft = (self.getSmallestInputNum(inputNums) !== nums[0] && nums.length > 0),
+        tabsRight = (self.getLargestInputNum(inputNums) !== nums[nums.length - 1] && nums.length > 0);
 
     self.postMessage({
         action: "refreshTabs",
@@ -546,10 +547,13 @@ self.updateInputProgress = function(inputData) {
  * @param {object} inputData
  * @param {number} inputData.inputNum - The input that's having its value updated
  * @param {string | ArrayBuffer} inputData.value - The new value of the input
+ * @param {boolean} inputData.force - If true, still updates the input value if the input type is different to the stored value
  */
 self.updateInputValue = function(inputData) {
     const inputNum = inputData.inputNum;
     if (inputNum < 1) return;
+    if (Object.prototype.hasOwnProperty.call(self.inputs[inputNum].data, "fileBuffer") &&
+    typeof inputData.value === "string" && !inputData.force) return;
     const value = inputData.value;
     if (self.inputs[inputNum] !== undefined) {
         if (typeof value === "string") {
@@ -587,7 +591,7 @@ self.updateInputObj = function(inputData) {
     const inputNum = inputData.inputNum;
     const data = inputData.data;
 
-    if (self.getInputObj(inputNum) === -1) return;
+    if (self.getInputObj(inputNum) === undefined) return;
 
     self.inputs[inputNum].data = data;
 };
@@ -660,9 +664,17 @@ self.handleLoaderMessage = function(r) {
     if ("fileBuffer" in r) {
         log.debug(`Input file ${inputNum} loaded.`);
         self.loadingInputs--;
+
         self.updateInputValue({
             inputNum: inputNum,
             value: r.fileBuffer
+        });
+
+        self.postMessage({
+            action: "fileLoaded",
+            data: {
+                inputNum: inputNum
+            }
         });
 
         const idx = self.getLoaderWorkerIdx(r.id);
@@ -779,7 +791,7 @@ self.loadFiles = function(filesData) {
     }
 
     self.getLoadProgress();
-    self.setInput({inputNum: activeTab, silent: false});
+    self.setInput({inputNum: activeTab, silent: true});
 };
 
 /**
@@ -1022,7 +1034,7 @@ self.inputSwitch = function(switchData) {
     const currentData = currentInput.data;
     if (currentInput === undefined || currentInput === null) return;
 
-    if (typeof switchData.outputData === "object") {
+    if (typeof switchData.outputData !== "string") {
         const output = new Uint8Array(switchData.outputData),
             types = detectFileType(output);
         let type = "unknown",
@@ -1033,15 +1045,22 @@ self.inputSwitch = function(switchData) {
         }
 
         // ArrayBuffer
-        currentInput.data = {
-            fileBuffer: switchData.outputData,
-            name: `output.${ext}`,
-            size: switchData.outputData.byteLength.toLocaleString(),
-            type: type
-        };
+        self.updateInputObj({
+            inputNum: switchData.inputNum,
+            data: {
+                fileBuffer: switchData.outputData,
+                name: `output.${ext}`,
+                size: switchData.outputData.byteLength.toLocaleString(),
+                type: type
+            }
+        });
     } else {
         // String
-        currentInput.data = switchData.outputData;
+        self.updateInputValue({
+            inputNum: switchData.inputNum,
+            value: switchData.outputData,
+            force: true
+        });
     }
 
     self.postMessage({
@@ -1052,6 +1071,11 @@ self.inputSwitch = function(switchData) {
         }
     });
 
-    self.setInput({inputNum: switchData.inputNum, silent: false});
+    self.postMessage({
+        action: "fileLoaded",
+        data: {
+            inputNum: switchData.inputNum
+        }
+    });
 
 };

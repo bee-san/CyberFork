@@ -2,12 +2,28 @@
 All major and minor version changes will be documented in this file. Details of patch-level version changes can be found in [commit messages](https://github.com/gchq/CyberChef/commits/master).
 
 
+### [9.4.0] - 2019-08-30
+- 'Render Markdown' operation added [@j433866] | [#627]
+
+### [9.3.0] - 2019-08-30
+- 'Show on map' operation added [@j433866] | [#477]
+
+### [9.2.0] - 2019-08-23
+- 'Parse UDP' operation added [@h345983745] | [#614]
+
+### [9.1.0] - 2019-08-22
+- 'Parse SSH Host Key' operation added [@j433866] | [#595]
+- 'Defang IP Addresses' operation added [@h345983745] | [#556]
+
 ## [9.0.0] - 2019-07-09
 - [Multiple inputs](https://github.com/gchq/CyberChef/wiki/Multiple-Inputs) are now supported in the main web UI, allowing you to upload and process multiple files at once [@j433866] | [#566]
 - A [Node.js API](https://github.com/gchq/CyberChef/wiki/Node-API) has been implemented, meaning that CyberChef can now be used as a library, either to provide specific operations, or an entire baking environment [@d98762625] | [#291]
 - A [read-eval-print loop (REPL)](https://github.com/gchq/CyberChef/wiki/Node-API#repl) is also included to enable prototyping and experimentation with the API [@d98762625] | [#291]
 - Light and dark Solarized themes added [@j433866] | [#566]
 
+<details>
+    <summary>Click to expand v8 minor versions</summary>
+    
 ### [8.38.0] - 2019-07-03
 - 'Streebog' and 'GOST hash' operations added [@MShwed] [@n1474335] | [#530]
 
@@ -129,6 +145,8 @@ All major and minor version changes will be documented in this file. Details of 
 ### [8.1.0] - 2018-08-19
 - 'Dechunk HTTP response' operation added [@sevzero] | [#311]
 
+</details>
+
 ## [8.0.0] - 2018-08-05
 - Codebase rewritten using [ES modules](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/) and [classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) [@n1474335] [@d98762625] [@artemisbot] [@picapi] | [#284]
 - Operation architecture restructured to make adding new operations a lot simpler [@n1474335] | [#284]
@@ -158,6 +176,10 @@ All major and minor version changes will be documented in this file. Details of 
 
 
 
+[9.4.0]: https://github.com/gchq/CyberChef/releases/tag/v9.4.0
+[9.3.0]: https://github.com/gchq/CyberChef/releases/tag/v9.3.0
+[9.2.0]: https://github.com/gchq/CyberChef/releases/tag/v9.2.0
+[9.1.0]: https://github.com/gchq/CyberChef/releases/tag/v9.1.0
 [9.0.0]: https://github.com/gchq/CyberChef/releases/tag/v9.0.0
 [8.38.0]: https://github.com/gchq/CyberChef/releases/tag/v8.38.0
 [8.37.0]: https://github.com/gchq/CyberChef/releases/tag/v8.37.0
@@ -265,6 +287,7 @@ All major and minor version changes will be documented in this file. Details of 
 [#467]: https://github.com/gchq/CyberChef/pull/467
 [#468]: https://github.com/gchq/CyberChef/pull/468
 [#476]: https://github.com/gchq/CyberChef/pull/476
+[#477]: https://github.com/gchq/CyberChef/pull/477
 [#489]: https://github.com/gchq/CyberChef/pull/489
 [#496]: https://github.com/gchq/CyberChef/pull/496
 [#506]: https://github.com/gchq/CyberChef/pull/506
@@ -275,7 +298,11 @@ All major and minor version changes will be documented in this file. Details of 
 [#531]: https://github.com/gchq/CyberChef/pull/531
 [#533]: https://github.com/gchq/CyberChef/pull/533
 [#535]: https://github.com/gchq/CyberChef/pull/535
+[#556]: https://github.com/gchq/CyberChef/pull/556
 [#566]: https://github.com/gchq/CyberChef/pull/566
 [#571]: https://github.com/gchq/CyberChef/pull/571
 [#585]: https://github.com/gchq/CyberChef/pull/585
 [#591]: https://github.com/gchq/CyberChef/pull/591
+[#595]: https://github.com/gchq/CyberChef/pull/595
+[#614]: https://github.com/gchq/CyberChef/pull/614
+[#627]: https://github.com/gchq/CyberChef/pull/627

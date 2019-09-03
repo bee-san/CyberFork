@@ -4,7 +4,7 @@
  * @license Apache-2.0
  */
 
-import Utils from "../core/Utils";
+import Utils, { debounce } from "../core/Utils";
 import {fromBase64} from "../core/lib/Base64";
 import Manager from "./Manager";
 import HTMLCategory from "./HTMLCategory";
@@ -41,7 +41,6 @@ class App {
         this.autoBakePause = false;
         this.progress      = 0;
         this.ingId         = 0;
-        this.timeouts      = {};
     }
 
 
@@ -295,7 +294,7 @@ class App {
             minSize: minimise ? [0, 0, 0] : [240, 310, 450],
             gutterSize: 4,
             expandToMin: true,
-            onDrag: this.debounce(function() {
+            onDrag: debounce(function() {
                 this.manager.recipe.adjustWidth();
                 this.manager.input.calcMaxTabs();
                 this.manager.output.calcMaxTabs();
@@ -633,7 +632,7 @@ class App {
      * Pops up a message to the user and writes it to the console log.
      *
      * @param {string} str - The message to display (HTML supported)
-     * @param {number} timeout - The number of milliseconds before the alert closes automatically
+     * @param {number} [timeout=0] - The number of milliseconds before the alert closes automatically
      *     0 for never (until the user closes it)
      * @param {boolean} [silent=false] - Don't show the message in the popup, only print it to the
      *     console
@@ -646,13 +645,11 @@ class App {
      * // Pops up a box with the message "Happy Christmas!" that will disappear after 5 seconds.
      * this.alert("Happy Christmas!", 5000);
      */
-    alert(str, timeout, silent) {
+    alert(str, timeout=0, silent=false) {
         const time = new Date();
 
         log.info("[" + time.toLocaleString() + "] " + str);
         if (silent) return;
-
-        timeout = timeout || 0;
 
         this.currentSnackbar = $.snackbar({
             content: str,
@@ -670,18 +667,22 @@ class App {
      *
      * @param {string} title - The title of the box
      * @param {string} body - The question (HTML supported)
+     * @param {string} accept - The text of the accept button
+     * @param {string} reject - The text of the reject button
      * @param {function} callback - A function accepting one boolean argument which handles the
      *   response e.g. function(answer) {...}
      * @param {Object} [scope=this] - The object to bind to the callback function
      *
      * @example
      * // Pops up a box asking if the user would like a cookie. Prints the answer to the console.
-     * this.confirm("Question", "Would you like a cookie?", function(answer) {console.log(answer);});
+     * this.confirm("Question", "Would you like a cookie?", "Yes", "No", function(answer) {console.log(answer);});
      */
-    confirm(title, body, callback, scope) {
+    confirm(title, body, accept, reject, callback, scope) {
         scope = scope || this;
         document.getElementById("confirm-title").innerHTML = title;
         document.getElementById("confirm-body").innerHTML = body;
+        document.getElementById("confirm-yes").innerText = accept;
+        document.getElementById("confirm-no").innerText = reject;
         document.getElementById("confirm-modal").style.display = "block";
 
         this.confirmClosed = false;
@@ -694,9 +695,14 @@ class App {
                 callback.bind(scope)(true);
                 $("#confirm-modal").modal("hide");
             }.bind(this))
+            .one("click", "#confirm-no", function() {
+                this.confirmClosed = true;
+                callback.bind(scope)(false);
+            }.bind(this))
             .one("hide.bs.modal", function(e) {
-                if (!this.confirmClosed)
-                    callback.bind(scope)(false);
+                if (!this.confirmClosed) {
+                    callback.bind(scope)(undefined);
+                }
                 this.confirmClosed = true;
             }.bind(this));
     }
@@ -715,6 +721,7 @@ class App {
 
         this.updateTitle(false, null, true);
     }
+
 
     /**
      * Update the page title to contain the new recipe
@@ -757,29 +764,6 @@ class App {
      */
     popState(e) {
         this.loadURIParams();
-    }
-
-
-    /**
-     * Debouncer to stop functions from being executed multiple times in a
-     * short space of time
-     * https://davidwalsh.name/javascript-debounce-function
-     *
-     * @param {function} func - The function to be executed after the debounce time
-     * @param {number} wait - The time (ms) to wait before executing the function
-     * @param {string} id - Unique ID to reference the timeout for the function
-     * @param {object} scope - The object to bind to the debounced function
-     * @param {array} args - Array of arguments to be passed to func
-     * @returns {function}
-     */
-    debounce(func, wait, id, scope, args) {
-        return function() {
-            const later = function() {
-                func.apply(scope, args);
-            };
-            clearTimeout(this.timeouts[id]);
-            this.timeouts[id] = setTimeout(later, wait);
-        }.bind(this);
     }
 
 }
