@@ -90,6 +90,7 @@ import "./tests/Protobuf";
 import "./tests/ParseSSHHostKey";
 import "./tests/DefangIP";
 import "./tests/ParseUDP";
+import "./tests/MIMEDecoding";
 
 // Cannot test operations that use the File type yet
 //import "./tests/SplitColourChannels";
