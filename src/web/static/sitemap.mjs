@@ -11,7 +11,7 @@ import OperationConfig from "../../core/config/OperationConfig.json" assert {typ
  */
 
 const smStream = new sm.SitemapStream({
-    hostname: "https://gchq.github.io/CyberChef",
+    hostname: "https://cyberfork.skerritt.blog",
 });
 
 smStream.write({
