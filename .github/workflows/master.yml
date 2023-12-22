@@ -32,7 +32,7 @@ jobs:
 
     - name: Production Build
       if: success()
-      run: npx grunt prod --msg="<a href='https://discord.com/invite/zYTM3rZM4T'>Discord</a> CyberFork is released, read about it <a href='skerritt.blog/cyberfork/'>here</a>"
+      run: npx grunt prod --msg="meow"
 
     - name: Generate sitemap
       run: npx grunt exec:sitemap
