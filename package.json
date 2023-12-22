@@ -1,9 +1,9 @@
 {
-  "name": "cyberfork",
+  "name": "cyberchef",
   "version": "10.5.2",
   "description": "The Cyber Swiss Army Knife for encryption, encoding, compression and data analysis.",
   "author": "n1474335 <n1474335@gmail.com>",
-  "homepage": "https://cyberfork.skerritt.blog",
+  "homepage": "https://gchq.github.io/CyberChef",
   "copyright": "Crown copyright 2016",
   "license": "Apache-2.0",
   "keywords": [
@@ -137,7 +137,6 @@
     "jsonwebtoken": "8.5.1",
     "jsqr": "^1.4.0",
     "jsrsasign": "^10.6.1",
-    "jswhat": "^2.0.1",
     "kbpgp": "2.1.15",
     "libbzip2-wasm": "0.0.4",
     "libyara-wasm": "^1.2.1",
