@@ -1275,9 +1275,13 @@ class Utils {
         return {
             "Space":         " ",
             "Percent":       "%",
+            "Period":        ".",
             "Comma":         ",",
             "Semi-colon":    ";",
             "Colon":         ":",
+            "Hyphen":        "-",
+            "Hash":          "#",
+            "Ampersand":     "&",
             "Tab":           "\t",
             "Line feed":     "\n",
             "CRLF":          "\r\n",
